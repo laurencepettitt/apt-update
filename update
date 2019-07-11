@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+### Written by Laurence Pettitt on 11/07/2019 under the MIT license (https://spdx.org/licenses/MIT.html)
+
+function choice
+{
+	local choice=""
+	read choice
+	if [ "$choice" == "" ] || [[ "$choice" =~ ^[Yy]$ ]]; then
+		true;
+	else
+		false;
+	fi
+}
+
+printf "Updating package list.. \n"
+sudo apt update
+
+printf "\n"
+
+printf "Listing upgradable packages.. \n"
+sudo apt list --upgradable
+
+printf "Would you like to upgrade these packages? [Y/n] "
+
+# if choice was negative then exit
+if ! choice; then exit; fi
+
+printf "Upgrading packages.. \n"
+sudo apt upgrade -y
+
+printf "Would you like to remove automatically installed packages which are no longer used? [Y/n] "
+
+if ! choice; then exit; fi
+
+printf "Removing automatically installed packages which are no longer used.. \n"
+sudo apt autoremove
+
+
+
+
+
